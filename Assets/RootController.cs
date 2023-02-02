@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RootController : MonoBehaviour
@@ -5,6 +6,8 @@ public class RootController : MonoBehaviour
 	public Sprite[] sprites;
 	//public GameObject particleEffect;
 	public Vector2 gridSize = new Vector2(1, 1);
+	public GameObject badDirectionText;
+	public GameObject powerUpAdded;
 
 	private int currentSprite = 0;
 	private int lastSprite = 0;
@@ -13,16 +16,49 @@ public class RootController : MonoBehaviour
 	private int lastDirection = -1;
 	private int currentDirection = 0;
 	private GameObject lastObj;
+	private bool badDirecton = false;
+	private bool powerAdded = false;
+	private List<Vector2> listGripPos = new List<Vector2>();
+	private List<Vector2> listPowers = new List<Vector2>();
 
+	int i = 0;
+	int j = 0;
 	private void Start()
 	{
 		// Establecer la posición inicial del grid
 		currentGridPos = new Vector2(0, 0);
+		//generar la grilla
+		generatePowerUps();
 	}
 
 	private void Update()
 	{
-		
+		if (badDirecton)
+        {
+			i += 1;
+			Debug.Log("eeee ="+i);
+            if (i >= 30)
+            {
+				badDirecton = false;
+				i = 0;
+				badDirectionText.SetActive(false);
+            }
+			
+        }
+		if (powerAdded)
+        {
+			j += 1;
+			Debug.Log("eeee ="+j);
+            if (j >= 100)
+            {
+				powerAdded = false;
+				j = 0;
+				powerUpAdded.SetActive(false);
+            }
+			
+        }
+
+		//5 arriba, 6 abajo, 0 derecha, 1 izquierda
 		if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			currentDirection = 5;
@@ -48,9 +84,9 @@ public class RootController : MonoBehaviour
 	private void MoveSprite(Vector2 direction)
 	{
 		// Instanciar el sprite y el efecto de particula
-		GameObject newSprite = new GameObject();
-		GameObject newSprite2 = new GameObject();
-        switch (lastDirection)
+
+		badDirecton = false;
+		switch (lastDirection)
         {
 			case -1:
 				currentSprite = currentDirection;
@@ -63,8 +99,7 @@ public class RootController : MonoBehaviour
 						lastSprite = 8;
 						break;
 					case 6:
-						currentSprite = currentDirection;
-						lastSprite = 8;
+						badDirecton = true;
 						break;
 					case 0:
 						currentSprite = 1;
@@ -80,8 +115,7 @@ public class RootController : MonoBehaviour
 				switch (currentDirection)
 				{
 					case 5:
-						currentSprite = currentDirection;
-						lastSprite = 8;
+						badDirecton = true;
 						break;
 					case 6:
 						currentSprite = currentDirection;
@@ -113,8 +147,7 @@ public class RootController : MonoBehaviour
 						lastSprite = 7;
 						break;
 					case 1:
-						currentSprite = 0;
-						lastSprite = 7;
+						badDirecton = true;
 						break;
 				}
 				break;
@@ -130,8 +163,7 @@ public class RootController : MonoBehaviour
 						lastSprite = 2;
 						break;
 					case 0:
-						currentSprite = 1;
-						lastSprite = 7;
+						badDirecton = true;
 						break;
 					case 1:
 						currentSprite = 0;
@@ -142,31 +174,65 @@ public class RootController : MonoBehaviour
 
 		}
 
-
-
-
-		newSprite.AddComponent<SpriteRenderer>().sprite = sprites[currentSprite];
-		newSprite.transform.position = (Vector3)currentGridPos + (Vector3)direction;
-		lastDirection = currentDirection;
-
-
-		if (lastDirection != -1)
-        {
-			if (lastObj) Destroy(lastObj);
-			lastObj = newSprite;
-			newSprite2 = new GameObject();
-			newSprite2.AddComponent<SpriteRenderer>().sprite = sprites[lastSprite];
-			newSprite2.transform.position = (Vector3)lastGripPos;
-			
+		if (listGripPos.Contains((Vector3)currentGridPos + (Vector3)direction)){
+			badDirecton = true;
 		}
-		
+		if (!badDirecton)
+        {
+			
+			GameObject newSprite = new GameObject();
+			newSprite.AddComponent<SpriteRenderer>().sprite = sprites[currentSprite];
+			newSprite.transform.position = (Vector3)currentGridPos + (Vector3)direction;
+			if (lastDirection != -1)
+			{
+			
+				GameObject newSprite2 = new GameObject();
+				if (lastObj) Destroy(lastObj);
+				lastObj = newSprite;
+				newSprite2 = new GameObject();
+				newSprite2.AddComponent<SpriteRenderer>().sprite = sprites[lastSprite];
+				newSprite2.transform.position = (Vector3)lastGripPos;
 
-		//GameObject particle = Instantiate(particleEffect, (Vector3)currentGridPos, Quaternion.identity);
-		
-		// Actualizar la posición actual del grid
-		currentGridPos += direction;
-		lastGripPos = currentGridPos;
-		// Borrar el efecto de particula
-		//Destroy(particle, particle.GetComponent<ParticleSystem>().main.duration);
+			}
+			lastDirection = currentDirection;
+			if (listPowers.Contains((Vector3)currentGridPos + (Vector3)direction))
+			{
+				powerUpAdded.SetActive(true);
+				powerAdded = true;
+			}
+
+			// Actualizar la posición actual del grid
+			currentGridPos += direction;
+
+			lastGripPos = currentGridPos;
+			listGripPos.Add(currentGridPos);
+			
+            // Borrar el efecto de particula
+            //Destroy(particle, particle.GetComponent<ParticleSystem>().main.duration);
+        }
+        else
+        {
+			Debug.Log("bad direction kapeee");
+			badDirectionText.SetActive(true);
+
+		}
+
 	}
+
+	private void generatePowerUps()
+    {
+		Vector2 position;
+		for (int i = 0; i < 3; i++)
+        {
+			position = new Vector2(Random.Range(-5,5), Random.Range(-5, 5));
+			
+			GameObject mineral1 = new GameObject();
+			mineral1.name = "mineral1";
+			mineral1.AddComponent<SpriteRenderer>().sprite = sprites[10];
+			mineral1.transform.position = (Vector3)position;
+			mineral1.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+			listPowers.Add(position);
+			Debug.Log("pos" + i + " " + listPowers[i].ToString());
+		}
+    }
 }
