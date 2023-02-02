@@ -8,6 +8,7 @@ public class RootController : MonoBehaviour
 	public Vector2 gridSize = new Vector2(1, 1);
 	public GameObject badDirectionText;
 	public GameObject powerUpAdded;
+	public Transform rootPointer;
 
 	private int currentSprite = 0;
 	private int lastSprite = 0;
@@ -27,6 +28,7 @@ public class RootController : MonoBehaviour
 	{
 		// Establecer la posición inicial del grid
 		currentGridPos = new Vector2(0, 0);
+		rootPointer.transform.position = (Vector2)currentGridPos;
 		//generar la grilla
 		generatePowerUps();
 	}
@@ -34,29 +36,29 @@ public class RootController : MonoBehaviour
 	private void Update()
 	{
 		if (badDirecton)
-        {
+		{
 			i += 1;
-			Debug.Log("eeee ="+i);
-            if (i >= 30)
-            {
+			Debug.Log("eeee =" + i);
+			if (i >= 30)
+			{
 				badDirecton = false;
 				i = 0;
 				badDirectionText.SetActive(false);
-            }
-			
-        }
+			}
+
+		}
 		if (powerAdded)
-        {
+		{
 			j += 1;
-			Debug.Log("eeee ="+j);
-            if (j >= 100)
-            {
+			Debug.Log("eeee =" + j);
+			if (j >= 100)
+			{
 				powerAdded = false;
 				j = 0;
 				powerUpAdded.SetActive(false);
-            }
-			
-        }
+			}
+
+		}
 
 		//5 arriba, 6 abajo, 0 derecha, 1 izquierda
 		if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -87,13 +89,13 @@ public class RootController : MonoBehaviour
 
 		badDirecton = false;
 		switch (lastDirection)
-        {
+		{
 			case -1:
 				currentSprite = currentDirection;
 				break;
 			case 5:
-                switch (currentDirection)
-                {
+				switch (currentDirection)
+				{
 					case 5:
 						currentSprite = currentDirection;
 						lastSprite = 8;
@@ -174,18 +176,20 @@ public class RootController : MonoBehaviour
 
 		}
 
-		if (listGripPos.Contains((Vector3)currentGridPos + (Vector3)direction)){
+		if (listGripPos.Contains((Vector3)currentGridPos + (Vector3)direction))
+		{
 			badDirecton = true;
 		}
 		if (!badDirecton)
-        {
-			
+		{
+
 			GameObject newSprite = new GameObject();
 			newSprite.AddComponent<SpriteRenderer>().sprite = sprites[currentSprite];
 			newSprite.transform.position = (Vector3)currentGridPos + (Vector3)direction;
+			rootPointer.transform.position = (Vector2)newSprite.transform.position;
 			if (lastDirection != -1)
 			{
-			
+
 				GameObject newSprite2 = new GameObject();
 				if (lastObj) Destroy(lastObj);
 				lastObj = newSprite;
@@ -206,12 +210,12 @@ public class RootController : MonoBehaviour
 
 			lastGripPos = currentGridPos;
 			listGripPos.Add(currentGridPos);
-			
-            // Borrar el efecto de particula
-            //Destroy(particle, particle.GetComponent<ParticleSystem>().main.duration);
-        }
-        else
-        {
+
+			// Borrar el efecto de particula
+			//Destroy(particle, particle.GetComponent<ParticleSystem>().main.duration);
+		}
+		else
+		{
 			Debug.Log("bad direction kapeee");
 			badDirectionText.SetActive(true);
 
@@ -220,19 +224,19 @@ public class RootController : MonoBehaviour
 	}
 
 	private void generatePowerUps()
-    {
+	{
 		Vector2 position;
 		for (int i = 0; i < 3; i++)
-        {
-			position = new Vector2(Random.Range(-5,5), Random.Range(-5, 5));
-			
+		{
+			position = new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
+
 			GameObject mineral1 = new GameObject();
 			mineral1.name = "mineral1";
 			mineral1.AddComponent<SpriteRenderer>().sprite = sprites[10];
 			mineral1.transform.position = (Vector3)position;
-			mineral1.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+			mineral1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 			listPowers.Add(position);
 			Debug.Log("pos" + i + " " + listPowers[i].ToString());
 		}
-    }
+	}
 }
