@@ -26,6 +26,7 @@ public class SongManager : MonoBehaviour
 	}
 
 	public static MidiFile midiFile;
+
 	// Start is called before the first frame update
 	void Start()
 	{
