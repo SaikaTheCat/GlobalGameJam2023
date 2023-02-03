@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,16 +22,21 @@ public class RootController : MonoBehaviour
 	private bool powerAdded = false;
 	private List<Vector2> listGripPos = new List<Vector2>();
 	private List<Vector2> listPowers = new List<Vector2>();
+	private int limitx = 10;
+	private int limity = 7;
+	private Vector3 tempPost;
 
 	int i = 0;
 	int j = 0;
 	private void Start()
 	{
 		// Establecer la posición inicial del grid
-		currentGridPos = new Vector2(0, 0);
+		currentGridPos = new Vector2(0.5f, 0.5f);
 		rootPointer.transform.position = (Vector2)currentGridPos;
 		//generar la grilla
 		generatePowerUps();
+		lastObj= new GameObject();
+		lastObj.AddComponent<SpriteRenderer>();
 	}
 
 	private void Update()
@@ -200,31 +206,40 @@ public class RootController : MonoBehaviour
 				break;
 
 		}
-
-		if (listGripPos.Contains((Vector3)currentGridPos + (Vector3)direction))
+		tempPost= (Vector3)currentGridPos + (Vector3)direction;
+		if (listGripPos.Contains(tempPost))
 		{
 			badDirecton = true;
 		}
+		if (Math.Abs(tempPost.x) >= limitx)
+        {
+			badDirecton = true;
+		}
+		if (Math.Abs(tempPost.y) >= limity)
+		{
+			badDirecton = true;
+		}
+		Debug.Log("tempos x "+ tempPost.x);
+
 		if (!badDirecton)
 		{
 
-			GameObject newSprite = new GameObject();
-			newSprite.AddComponent<SpriteRenderer>().sprite = sprites[currentSprite];
-			newSprite.transform.position = (Vector3)currentGridPos + (Vector3)direction;
-			rootPointer.transform.position = (Vector2)newSprite.transform.position;
+			lastObj.GetComponent<SpriteRenderer>().sprite = sprites[currentSprite];
+			lastObj.transform.position = tempPost;
+			rootPointer.transform.position = (Vector2)lastObj.transform.position;
 			if (lastDirection != -1)
 			{
 
 				GameObject newSprite2 = new GameObject();
-				if (lastObj) Destroy(lastObj);
-				lastObj = newSprite;
+				//if (lastObj) Destroy(lastObj);
+				//lastObj = newSprite;
 				newSprite2 = new GameObject();
 				newSprite2.AddComponent<SpriteRenderer>().sprite = sprites[lastSprite];
 				newSprite2.transform.position = (Vector3)lastGripPos;
 
 			}
 			lastDirection = currentDirection;
-			if (listPowers.Contains((Vector3)currentGridPos + (Vector3)direction))
+			if (listPowers.Contains(tempPost))
 			{
 				powerUpAdded.SetActive(true);
 				powerAdded = true;
@@ -253,7 +268,7 @@ public class RootController : MonoBehaviour
 		Vector2 position;
 		for (int i = 0; i < 3; i++)
 		{
-			position = new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
+			position = new Vector2(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(-5, 5));
 
 			GameObject mineral1 = new GameObject();
 			mineral1.name = "mineral1";
