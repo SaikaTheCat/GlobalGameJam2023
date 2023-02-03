@@ -52,22 +52,22 @@ public class Lane : MonoBehaviour
 
 			if (Input.GetKeyDown(input[0]))
 			{
-				KeyPressed(audioTime, timeStamp, marginOfError);
+				KeyPressed(audioTime, timeStamp, marginOfError, input[0]);
 				Debug.Log($"input: {input[0]}");
 			}
 			else if (Input.GetKeyDown(input[1]))
 			{
-				KeyPressed(audioTime, timeStamp, marginOfError);
+				KeyPressed(audioTime, timeStamp, marginOfError, input[1]);
 				Debug.Log($"input: {input[1]}");
 			}
 			else if (Input.GetKeyDown(input[2]))
 			{
-				KeyPressed(audioTime, timeStamp, marginOfError);
+				KeyPressed(audioTime, timeStamp, marginOfError, input[2]);
 				Debug.Log($"input: {input[2]}");
 			}
 			else if (Input.GetKeyDown(input[3]))
 			{
-				KeyPressed(audioTime, timeStamp, marginOfError);
+				KeyPressed(audioTime, timeStamp, marginOfError, input[3]);
 				Debug.Log($"input: {input[3]}");
 			}
 			if (timeStamp + marginOfError <= audioTime)
@@ -79,11 +79,12 @@ public class Lane : MonoBehaviour
 		}
 
 	}
-	private void KeyPressed(double audioTime, double timeStamp, double marginOfError)
+	private void KeyPressed(double audioTime, double timeStamp, double marginOfError, KeyCode keyCode)
 	{
 		if (Math.Abs(audioTime - timeStamp) < marginOfError)
 		{
 			Hit();
+			FindObjectOfType<RootController>().MakeAMove(keyCode);
 			print($"Hit on {inputIndex} note");
 			Destroy(notes[inputIndex].gameObject);
 			inputIndex++;
