@@ -10,6 +10,8 @@ public class Lane : MonoBehaviour
 	public GameObject notePrefab;
 	List<Note> notes = new List<Note>();
 	public List<double> timeStamps = new List<double>();
+	[SerializeField] List<Transform> arrowContainer;
+	[SerializeField] List<InstanceWithImage> arrow;
 
 	int spawnIndex = 0;
 	int inputIndex = 0;
@@ -53,21 +55,25 @@ public class Lane : MonoBehaviour
 			if (Input.GetKeyDown(input[0]))
 			{
 				KeyPressed(audioTime, timeStamp, marginOfError, input[0]);
+				Instantiate(arrow[1], arrowContainer[1].position, arrow[1].transform.rotation);
 				Debug.Log($"input: {input[0]}");
 			}
 			else if (Input.GetKeyDown(input[1]))
 			{
 				KeyPressed(audioTime, timeStamp, marginOfError, input[1]);
+				Instantiate(arrow[2], arrowContainer[2].position, arrow[2].transform.rotation);
 				Debug.Log($"input: {input[1]}");
 			}
 			else if (Input.GetKeyDown(input[2]))
 			{
 				KeyPressed(audioTime, timeStamp, marginOfError, input[2]);
+				Instantiate(arrow[0], arrowContainer[3].position, arrow[0].transform.rotation);
 				Debug.Log($"input: {input[2]}");
 			}
 			else if (Input.GetKeyDown(input[3]))
 			{
 				KeyPressed(audioTime, timeStamp, marginOfError, input[3]);
+				Instantiate(arrow[3], arrowContainer[0].position, arrow[3].transform.rotation);
 				Debug.Log($"input: {input[3]}");
 			}
 			if (timeStamp + marginOfError <= audioTime)
