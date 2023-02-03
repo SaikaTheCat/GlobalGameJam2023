@@ -35,6 +35,8 @@ public class RootController : MonoBehaviour
 		rootPointer.transform.position = (Vector2)currentGridPos;
 		//generar la grilla
 		generatePowerUps();
+		lastObj= new GameObject();
+		lastObj.AddComponent<SpriteRenderer>();
 	}
 
 	private void Update()
@@ -222,16 +224,15 @@ public class RootController : MonoBehaviour
 		if (!badDirecton)
 		{
 
-			GameObject newSprite = new GameObject();
-			newSprite.AddComponent<SpriteRenderer>().sprite = sprites[currentSprite];
-			newSprite.transform.position = tempPost;
-			rootPointer.transform.position = (Vector2)newSprite.transform.position;
+			lastObj.GetComponent<SpriteRenderer>().sprite = sprites[currentSprite];
+			lastObj.transform.position = tempPost;
+			rootPointer.transform.position = (Vector2)lastObj.transform.position;
 			if (lastDirection != -1)
 			{
 
 				GameObject newSprite2 = new GameObject();
-				if (lastObj) Destroy(lastObj);
-				lastObj = newSprite;
+				//if (lastObj) Destroy(lastObj);
+				//lastObj = newSprite;
 				newSprite2 = new GameObject();
 				newSprite2.AddComponent<SpriteRenderer>().sprite = sprites[lastSprite];
 				newSprite2.transform.position = (Vector3)lastGripPos;
