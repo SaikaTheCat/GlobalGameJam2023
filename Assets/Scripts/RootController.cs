@@ -38,11 +38,17 @@ public class RootController : MonoBehaviour
 		lastObj= new GameObject();
 		lastObj.AddComponent<SpriteRenderer>();
 	}
+	private void Miss()
+    {
+		ScoreManager.Miss();
+		HealthManager.HealthMinus();
+    }
 
 	private void Update()
 	{
 		if (badDirecton)
 		{
+			Miss();
 			i += 1;
 			Debug.Log("eeee =" + i);
 			if (i >= 30)

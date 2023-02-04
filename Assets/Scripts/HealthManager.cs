@@ -1,22 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    [SerializeField] private List<Sprite> healthSprites;
+    [SerializeField] private List<Image> healthImages;
     public static HealthManager Instance;
-    private int livesLeft;
+    static int livesLeft;
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
-        livesLeft = 7;
+        livesLeft = 4;
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void HealthMinus()
     {
-        
+        if(!(livesLeft==0))
+            livesLeft -= 1;
+    }
+    private void Update()
+    {
+        if(!(livesLeft==4))
+            Destroy(healthImages[livesLeft]);
     }
 }

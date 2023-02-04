@@ -79,6 +79,7 @@ public class Lane : MonoBehaviour
 			if (timeStamp + marginOfError <= audioTime)
 			{
 				Miss();
+				
 				print($"Missed {inputIndex} note");
 				inputIndex++;
 			}
@@ -107,5 +108,6 @@ public class Lane : MonoBehaviour
 	private void Miss()
 	{
 		ScoreManager.Miss();
+		HealthManager.HealthMinus();
 	}
 }
