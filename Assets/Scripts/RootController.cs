@@ -217,14 +217,14 @@ public class RootController : MonoBehaviour
 		{
 			badDirecton = true;
 		}
-		if (Math.Abs(tempPost.x) >= limitx)
+		/*if (Math.Abs(tempPost.x) >= limitx)
         {
 			badDirecton = true;
 		}
 		if (Math.Abs(tempPost.y) >= limity)
 		{
 			badDirecton = true;
-		}
+		}*/
 		Debug.Log("tempos x "+ tempPost.x);
 
 		if (!badDirecton)

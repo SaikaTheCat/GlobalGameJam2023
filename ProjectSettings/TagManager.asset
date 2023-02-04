@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: bg
+    uniqueID: 306567141
+    locked: 0
+  - name: gems
+    uniqueID: 2931059057
+    locked: 0
+  - name: water
+    uniqueID: 3911177207
+    locked: 0
+  - name: stones
+    uniqueID: 2991450909
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
