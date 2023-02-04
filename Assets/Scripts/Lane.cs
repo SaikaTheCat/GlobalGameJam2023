@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Lane : MonoBehaviour
 {
@@ -32,9 +33,23 @@ public class Lane : MonoBehaviour
 			}
 		}
 	}
+	private bool IsDead()
+	{
+		bool isDead = HealthManager.livesLeft == 0;
+		Debug.Log($"livesleft {HealthManager.livesLeft}");
+		return (isDead);
+	}
+
 	// Update is called once per frame
 	void Update()
 	{
+		var isDead = IsDead();
+		Debug.Log($"is dead = {isDead}");
+		if (isDead)
+		{
+			SceneManager.LoadScene(2);
+			Destroy(gameObject);
+		}
 		if (spawnIndex < timeStamps.Count)
 		{
 			if (SongManager.GetAudioSourceTime() >= timeStamps[spawnIndex] - SongManager.Instance.noteTime)
@@ -105,7 +120,7 @@ public class Lane : MonoBehaviour
 	{
 		ScoreManager.Hit();
 	}
-	private void Miss()
+	public void Miss()
 	{
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();

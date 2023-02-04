@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RootController : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class RootController : MonoBehaviour
 	private int limity = 7;
 	private Vector3 tempPost;
 
+
 	int i = 0;
 	int j = 0;
 	private void Start()
@@ -43,6 +45,8 @@ public class RootController : MonoBehaviour
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();
     }
+
+
 
 	private void Update()
 	{
