@@ -49,6 +49,7 @@ public class RootController : MonoBehaviour
 	}
 	private void Miss()
     {
+		PlayerEvents.playerDamaged.Invoke(1f, gameObject);
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();
 		HealthManager.healthMinusTriggered = true;
