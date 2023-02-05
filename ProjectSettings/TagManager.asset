@@ -54,6 +54,9 @@ TagManager:
   - name: stones
     uniqueID: 2991450909
     locked: 0
+  - name: nextLevelHole
+    uniqueID: 3448827745
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
