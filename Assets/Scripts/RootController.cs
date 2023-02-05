@@ -15,6 +15,8 @@ public class RootController : MonoBehaviour
 	public Tilemap waters;
 	public Tilemap gems;
 	public Tilemap limit;
+	public Tilemap nextLevel;
+	public int level;
 
 	private int currentSprite = 0;
 	private int lastSprite = 0;
@@ -263,7 +265,12 @@ public class RootController : MonoBehaviour
 				Miss();
 				Debug.Log($" root hay un limite");
 			}
-
+			Vector3Int nextLevelMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (nextLevel.GetTile(nextLevelMap) != null)
+			{
+				Player.nexLevel = ""+ (level+1);
+				SceneManager.LoadScene(SceneManager.sceneCount-1);
+			}
 
 		}
 
