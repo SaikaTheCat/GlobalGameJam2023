@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ShakeOnPlayerMiss : MonoBehaviour
 {
-	public float hitAmplitudeGain = 2, hitFrequencyGain = 2, shakeTime = 1;
+	public float hitAmplitudeGain, hitFrequencyGain, shakeTime;
 	CinemachineVirtualCamera vcam;
 	CinemachineBasicMultiChannelPerlin noisePerlin;
 	bool isShaking = false;
@@ -26,6 +26,7 @@ public class ShakeOnPlayerMiss : MonoBehaviour
 		isShaking = true;
 		noisePerlin.m_AmplitudeGain = hitAmplitudeGain;
 		noisePerlin.m_FrequencyGain = hitFrequencyGain;
+		Debug.Log($"shakee gain:{hitAmplitudeGain} freq:{hitAmplitudeGain}");
 		
 	}
 	private void StopShake()

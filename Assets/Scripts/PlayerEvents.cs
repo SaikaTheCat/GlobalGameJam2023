@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerEvents : MonoBehaviour
+public class PlayerEvents 
 {
 	public static UnityAction<float, GameObject> playerDamaged;
 }
