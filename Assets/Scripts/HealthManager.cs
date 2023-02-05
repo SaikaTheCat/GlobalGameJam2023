@@ -7,7 +7,7 @@ public class HealthManager : MonoBehaviour
 {
     [SerializeField] private List<Image> healthImages;
     public static HealthManager Instance;
-    static int livesLeft;
+    public static int livesLeft;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +19,13 @@ public class HealthManager : MonoBehaviour
     {
         if(!(livesLeft==0))
             livesLeft -= 1;
+    }
+    public static void HealthPlus()
+    {
+        if(!(livesLeft == 4))
+        {
+            livesLeft += 1;
+        }
     }
     private void Update()
     {
