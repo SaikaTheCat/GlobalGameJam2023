@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class RootController : MonoBehaviour
 {
@@ -10,6 +12,11 @@ public class RootController : MonoBehaviour
 	public GameObject badDirectionText;
 	public GameObject powerUpAdded;
 	public Transform rootPointer;
+	public GameObject head;
+	public Tilemap stones;
+	public Tilemap waters;
+	public Tilemap gems;
+	public Tilemap limit;
 
 	private int currentSprite = 0;
 	private int lastSprite = 0;
@@ -25,6 +32,9 @@ public class RootController : MonoBehaviour
 	private int limitx = 10;
 	private int limity = 7;
 	private Vector3 tempPost;
+	
+	
+
 
 	int i = 0;
 	int j = 0;
@@ -34,26 +44,42 @@ public class RootController : MonoBehaviour
 		currentGridPos = new Vector2(0.5f, 0.5f);
 		rootPointer.transform.position = (Vector2)currentGridPos;
 		//generar la grilla
-		generatePowerUps();
-		lastObj= new GameObject();
+		lastObj= head;
 		lastObj.AddComponent<SpriteRenderer>();
 	}
 	private void Miss()
     {
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();
+		HealthManager.healthMinusTriggered = true;
     }
+	private void Hit()
+	{
+		ScoreManager.Hit();
+		HealthManager.HealthPlus();
+		HealthManager.healthPlusTriggered = true;
+	}
+	private void MissGem()
+    {
+		GemManager.GemMinus();
+		GemManager.gemMinusTriggered = true;
+	}
+	private void HitGem()
+	{
+		GemManager.GemPlus();
+		GemManager.gemPlusTriggered = true;
+	}
+
 
 	private void Update()
 	{
 		if (badDirecton)
 		{
-			Miss();
 			i += 1;
 			Debug.Log("eeee =" + i);
 			if (i >= 30)
 			{
-				badDirecton = false;
+				//badDirecton = false;
 				i = 0;
 				badDirectionText.SetActive(false);
 			}
@@ -212,22 +238,61 @@ public class RootController : MonoBehaviour
 				break;
 
 		}
-		tempPost= (Vector3)currentGridPos + (Vector3)direction;
+		tempPost = (Vector3)currentGridPos + (Vector3)direction;
 		if (listGripPos.Contains(tempPost))
 		{
 			badDirecton = true;
 		}
-		/*if (Math.Abs(tempPost.x) >= limitx)
-        {
-			badDirecton = true;
-		}
-		if (Math.Abs(tempPost.y) >= limity)
-		{
-			badDirecton = true;
-		}*/
-		Debug.Log("tempos x "+ tempPost.x);
-
+		Debug.Log("tempos x " + tempPost.x + stones.gameObject.name);
+		Debug.Log($"root livesleft {HealthManager.livesLeft}");
 		if (!badDirecton)
+        {
+			
+			Vector3Int stonesMap = stones.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if(stones.GetTile(stonesMap) != null)
+            {
+				Debug.Log($"root hay un stoneee {GemManager.gemAmount} :  {GemManager.gemAmount >= 1}");
+				if (GemManager.gemAmount >= 1)
+                {
+					MissGem();
+					stones.SetTile(stonesMap, null);
+					Debug.Log($"root hay un stoneee con gemas {HealthManager.livesLeft}");
+				}
+                else
+                {
+					badDirecton = true;
+					Debug.Log($"root hay un stoneee sin gemas {HealthManager.livesLeft}");
+				}
+				
+
+			}
+			Vector3Int waterMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (waters.GetTile(waterMap) != null)
+			{
+				
+				Hit();
+				waters.SetTile(waterMap, null);
+				Debug.Log($" root hay un water{HealthManager.livesLeft}");
+			}
+			Vector3Int gemMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (gems.GetTile(gemMap) != null)
+			{
+				HitGem();
+				gems.SetTile(gemMap, null);
+				Debug.Log($" root hay un gema{GemManager.gemAmount}");
+			}
+			Vector3Int limitMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (limit.GetTile(limitMap) != null)
+			{
+				badDirecton = true;
+				Miss();
+				Debug.Log($" root hay un limite");
+			}
+
+
+		}
+
+		if (!badDirecton )
 		{
 
 			lastObj.GetComponent<SpriteRenderer>().sprite = sprites[currentSprite];
@@ -264,25 +329,9 @@ public class RootController : MonoBehaviour
 		{
 			Debug.Log("bad direction kapeee");
 			badDirectionText.SetActive(true);
-
+			badDirecton = false;
+			Miss();
 		}
 
-	}
-
-	private void generatePowerUps()
-	{
-		Vector2 position;
-		for (int i = 0; i < 3; i++)
-		{
-			position = new Vector2(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(-5, 5));
-
-			GameObject mineral1 = new GameObject();
-			mineral1.name = "mineral1";
-			mineral1.AddComponent<SpriteRenderer>().sprite = sprites[10];
-			mineral1.transform.position = (Vector3)position;
-			mineral1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-			listPowers.Add(position);
-			Debug.Log("pos" + i + " " + listPowers[i].ToString());
-		}
 	}
 }
