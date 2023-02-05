@@ -11765,6 +11765,14 @@ PrefabInstance:
       propertyPath: m_BoundingShape2D
       value: 
       objectReference: {fileID: 1791419168}
+    - target: {fileID: 1212841506612942092, guid: 7caef0a7bc5b26f4187cfb356e86b6fd, type: 3}
+      propertyPath: shakeTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1212841506612942092, guid: 7caef0a7bc5b26f4187cfb356e86b6fd, type: 3}
+      propertyPath: hitAmplitudeGain
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1212841506622790874, guid: 7caef0a7bc5b26f4187cfb356e86b6fd, type: 3}
       propertyPath: m_NoiseProfile
       value: 

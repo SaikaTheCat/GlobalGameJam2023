@@ -17,6 +17,10 @@ public class ShakeOnPlayerMiss : MonoBehaviour
 		vcam = GetComponent<CinemachineVirtualCamera>();
 		noisePerlin = vcam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 	}
+	void OnDestroy()
+	{
+		PlayerEvents.playerDamaged -= Shake;
+	}
 	public void Shake(float damage, GameObject characterHit)
 	{
 		isShaking = true;
