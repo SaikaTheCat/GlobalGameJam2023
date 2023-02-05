@@ -13,7 +13,7 @@ public class Lane : MonoBehaviour
 	public List<double> timeStamps = new List<double>();
 	[SerializeField] List<Transform> arrowContainer;
 	[SerializeField] List<InstanceWithImage> arrow;
-
+	public int scene;
 	int spawnIndex = 0;
 	int inputIndex = 0;
 
@@ -47,7 +47,7 @@ public class Lane : MonoBehaviour
 		Debug.Log($"is dead = {isDead}");
 		if (isDead)
 		{
-			SceneManager.LoadScene(2);
+			SceneManager.LoadScene(scene);
 			Destroy(gameObject);
 		}
 		if (spawnIndex < timeStamps.Count)
@@ -122,6 +122,7 @@ public class Lane : MonoBehaviour
 	}
 	public void Miss()
 	{
+		PlayerEvents.playerDamaged.Invoke(1f, gameObject);
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();
 		HealthManager.healthMinusTriggered = true;

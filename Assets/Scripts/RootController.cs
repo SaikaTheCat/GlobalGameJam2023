@@ -9,14 +9,14 @@ public class RootController : MonoBehaviour
 	public Sprite[] sprites;
 	//public GameObject particleEffect;
 	public Vector2 gridSize = new Vector2(1, 1);
-	public GameObject badDirectionText;
-	public GameObject powerUpAdded;
 	public Transform rootPointer;
 	public GameObject head;
 	public Tilemap stones;
 	public Tilemap waters;
 	public Tilemap gems;
 	public Tilemap limit;
+	public Tilemap nextLevel;
+	public int level;
 
 	private int currentSprite = 0;
 	private int lastSprite = 0;
@@ -26,7 +26,6 @@ public class RootController : MonoBehaviour
 	private int currentDirection = 0;
 	private GameObject lastObj;
 	private bool badDirecton = false;
-	private bool powerAdded = false;
 	private List<Vector2> listGripPos = new List<Vector2>();
 	private List<Vector2> listPowers = new List<Vector2>();
 	private int limitx = 10;
@@ -49,6 +48,7 @@ public class RootController : MonoBehaviour
 	}
 	private void Miss()
     {
+		PlayerEvents.playerDamaged.Invoke(1f, gameObject);
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();
 		HealthManager.healthMinusTriggered = true;
@@ -73,30 +73,7 @@ public class RootController : MonoBehaviour
 
 	private void Update()
 	{
-		if (badDirecton)
-		{
-			i += 1;
-			Debug.Log("eeee =" + i);
-			if (i >= 30)
-			{
-				//badDirecton = false;
-				i = 0;
-				badDirectionText.SetActive(false);
-			}
-
-		}
-		if (powerAdded)
-		{
-			j += 1;
-			Debug.Log("eeee =" + j);
-			if (j >= 100)
-			{
-				powerAdded = false;
-				j = 0;
-				powerUpAdded.SetActive(false);
-			}
-
-		}
+		
 		/*if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			currentDirection = 5;
@@ -288,7 +265,12 @@ public class RootController : MonoBehaviour
 				Miss();
 				Debug.Log($" root hay un limite");
 			}
-
+			Vector3Int nextLevelMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (nextLevel.GetTile(nextLevelMap) != null)
+			{
+				Player.nexLevel = "level"+ (level+1);
+				SceneManager.LoadScene("WinScene");
+			}
 
 		}
 
@@ -310,11 +292,7 @@ public class RootController : MonoBehaviour
 
 			}
 			lastDirection = currentDirection;
-			if (listPowers.Contains(tempPost))
-			{
-				powerUpAdded.SetActive(true);
-				powerAdded = true;
-			}
+			
 
 			// Actualizar la posición actual del grid
 			currentGridPos += direction;
@@ -328,7 +306,6 @@ public class RootController : MonoBehaviour
 		else
 		{
 			Debug.Log("bad direction kapeee");
-			badDirectionText.SetActive(true);
 			badDirecton = false;
 			Miss();
 		}
