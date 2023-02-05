@@ -8,8 +8,10 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private List<Image> healthImages;
     public static HealthManager Instance;
     public static int livesLeft;
-    // Start is called before the first frame update
-    void Start()
+	public static bool healthPlusTriggered = false;
+	public static bool healthMinusTriggered = false;
+	// Start is called before the first frame update
+	void Start()
     {
         Instance = this;
         livesLeft = 4;
@@ -29,7 +31,16 @@ public class HealthManager : MonoBehaviour
     }
     private void Update()
     {
-        if(!(livesLeft==4))
-            Destroy(healthImages[livesLeft]);
+		if (healthMinusTriggered)
+		{
+			healthMinusTriggered = false;
+			healthImages[livesLeft].gameObject.SetActive(false);
+		}
+		else if (healthPlusTriggered)
+		{
+			healthPlusTriggered = false;
+			healthImages[livesLeft-1].gameObject.SetActive(true);
+		}
+		
     }
 }

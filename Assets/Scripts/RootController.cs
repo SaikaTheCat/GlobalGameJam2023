@@ -50,11 +50,13 @@ public class RootController : MonoBehaviour
     {
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();
+		HealthManager.healthMinusTriggered = true;
     }
 	private void Hit()
 	{
 		ScoreManager.Hit();
 		HealthManager.HealthPlus();
+		HealthManager.healthPlusTriggered = true;
 	}
 
 

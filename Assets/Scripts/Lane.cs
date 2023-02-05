@@ -124,5 +124,6 @@ public class Lane : MonoBehaviour
 	{
 		ScoreManager.Miss();
 		HealthManager.HealthMinus();
+		HealthManager.healthMinusTriggered = true;
 	}
 }
