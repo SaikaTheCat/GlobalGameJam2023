@@ -248,6 +248,7 @@ public class RootController : MonoBehaviour
 			{
 				
 				Hit();
+				waters.SetTile(waterMap, null);
 				Debug.Log($" root hay un water{HealthManager.livesLeft}");
 			}
 
