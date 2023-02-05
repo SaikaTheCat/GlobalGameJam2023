@@ -26,7 +26,7 @@ public class HealthManager : MonoBehaviour
     {
         if(!(livesLeft == 4))
         {
-            livesLeft += 1;
+            livesLeft = 4;
         }
     }
     private void Update()
@@ -39,7 +39,10 @@ public class HealthManager : MonoBehaviour
 		else if (healthPlusTriggered)
 		{
 			healthPlusTriggered = false;
-			healthImages[livesLeft-1].gameObject.SetActive(true);
+			healthImages[0].gameObject.SetActive(true);
+			healthImages[1].gameObject.SetActive(true);
+			healthImages[2].gameObject.SetActive(true);
+			healthImages[3].gameObject.SetActive(true);
 		}
 		
     }
