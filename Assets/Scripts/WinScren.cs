@@ -8,7 +8,7 @@ public class WinScren : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        winButton.onClick.AddListener(() => { SceneManager.LoadScene(Player.nexLevel); });
+        winButton.onClick.AddListener(() => { SceneManager.LoadScene(0); });
     }
 
 
