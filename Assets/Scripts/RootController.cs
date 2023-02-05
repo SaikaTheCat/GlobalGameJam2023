@@ -268,8 +268,8 @@ public class RootController : MonoBehaviour
 			Vector3Int nextLevelMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
 			if (nextLevel.GetTile(nextLevelMap) != null)
 			{
-				Player.nexLevel = ""+ (level+1);
-				SceneManager.LoadScene(SceneManager.sceneCount-1);
+				Player.nexLevel = "level"+ (level+1);
+				SceneManager.LoadScene("WinScene");
 			}
 
 		}
