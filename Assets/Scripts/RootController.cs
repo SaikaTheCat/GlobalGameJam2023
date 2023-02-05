@@ -16,6 +16,7 @@ public class RootController : MonoBehaviour
 	public Tilemap stones;
 	public Tilemap waters;
 	public Tilemap gems;
+	public Tilemap limit;
 
 	private int currentSprite = 0;
 	private int lastSprite = 0;
@@ -57,6 +58,16 @@ public class RootController : MonoBehaviour
 		ScoreManager.Hit();
 		HealthManager.HealthPlus();
 		HealthManager.healthPlusTriggered = true;
+	}
+	private void MissGem()
+    {
+		GemManager.GemMinus();
+		GemManager.gemMinusTriggered = true;
+	}
+	private void HitGem()
+	{
+		GemManager.GemPlus();
+		GemManager.gemPlusTriggered = true;
 	}
 
 
@@ -240,9 +251,19 @@ public class RootController : MonoBehaviour
 			Vector3Int stonesMap = stones.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
 			if(stones.GetTile(stonesMap) != null)
             {
+				Debug.Log($"root hay un stoneee {GemManager.gemAmount} :  {GemManager.gemAmount >= 1}");
+				if (GemManager.gemAmount >= 1)
+                {
+					MissGem();
+					stones.SetTile(stonesMap, null);
+					Debug.Log($"root hay un stoneee con gemas {HealthManager.livesLeft}");
+				}
+                else
+                {
+					badDirecton = true;
+					Debug.Log($"root hay un stoneee sin gemas {HealthManager.livesLeft}");
+				}
 				
-				badDirecton = true;
-				Debug.Log($"root hay un stoneee {HealthManager.livesLeft}");
 
 			}
 			Vector3Int waterMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
@@ -252,6 +273,20 @@ public class RootController : MonoBehaviour
 				Hit();
 				waters.SetTile(waterMap, null);
 				Debug.Log($" root hay un water{HealthManager.livesLeft}");
+			}
+			Vector3Int gemMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (gems.GetTile(gemMap) != null)
+			{
+				HitGem();
+				gems.SetTile(gemMap, null);
+				Debug.Log($" root hay un gema{GemManager.gemAmount}");
+			}
+			Vector3Int limitMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (limit.GetTile(limitMap) != null)
+			{
+				badDirecton = true;
+				Miss();
+				Debug.Log($" root hay un limite");
 			}
 
 
