@@ -16,6 +16,7 @@ public class RootController : MonoBehaviour
 	public Tilemap stones;
 	public Tilemap waters;
 	public Tilemap gems;
+	public Tilemap limit;
 
 	private int currentSprite = 0;
 	private int lastSprite = 0;
@@ -279,6 +280,13 @@ public class RootController : MonoBehaviour
 				HitGem();
 				gems.SetTile(gemMap, null);
 				Debug.Log($" root hay un gema{GemManager.gemAmount}");
+			}
+			Vector3Int limitMap = waters.WorldToCell((Vector3)currentGridPos + (Vector3)direction);
+			if (limit.GetTile(limitMap) != null)
+			{
+				badDirecton = true;
+				Miss();
+				Debug.Log($" root hay un limite");
 			}
 
 
