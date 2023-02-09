@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GemManager : MonoBehaviour
 {
     [SerializeField] private List<Image> gemImages;
+    [SerializeField] private int gemMax;
     public static GemManager Instance;
     public static int gemAmount;
 	public static bool gemPlusTriggered = false;
@@ -24,7 +25,7 @@ public class GemManager : MonoBehaviour
     }
     public static void GemPlus()
     {
-        if(!(gemAmount == 3))
+        if(!(gemAmount == Instance.gemMax))
         {
             gemAmount += 1;
         }
