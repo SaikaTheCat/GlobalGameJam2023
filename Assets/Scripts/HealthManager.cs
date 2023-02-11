@@ -7,6 +7,7 @@ public class HealthManager : MonoBehaviour
 {
     [SerializeField] private List<Image> healthImages;
     public static HealthManager Instance;
+    public static int livesMax;
     public static int livesLeft;
 	public static bool healthPlusTriggered = false;
 	public static bool healthMinusTriggered = false;
@@ -14,7 +15,8 @@ public class HealthManager : MonoBehaviour
 	void Start()
     {
         Instance = this;
-        livesLeft = 4;
+        livesLeft = 8;
+        livesMax = 8;
     }
 
     public static void HealthMinus()
@@ -24,9 +26,9 @@ public class HealthManager : MonoBehaviour
     }
     public static void HealthPlus()
     {
-        if(!(livesLeft == 4))
+        if(!(livesLeft == livesMax))
         {
-            livesLeft = 4;
+            livesLeft = livesMax;
         }
     }
     private void Update()
@@ -39,10 +41,11 @@ public class HealthManager : MonoBehaviour
 		else if (healthPlusTriggered)
 		{
 			healthPlusTriggered = false;
-			healthImages[0].gameObject.SetActive(true);
-			healthImages[1].gameObject.SetActive(true);
-			healthImages[2].gameObject.SetActive(true);
-			healthImages[3].gameObject.SetActive(true);
+
+            for(int i = 0; i < livesMax; i++)
+            {
+                healthImages[i].gameObject.SetActive(true);
+            }
 		}
 		
     }
